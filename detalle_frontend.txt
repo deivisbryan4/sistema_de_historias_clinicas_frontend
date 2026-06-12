@@ -1,0 +1,111 @@
+================================================================================
+DETALLE DEL FRONTEND — VISTAS, BOTONES Y ACCIONES
+================================================================================
+
+Este documento describe detalladamente la interfaz de usuario de la aplicación
+Flutter, desglosando cada pantalla, sus componentes y las acciones posibles.
+
+--------------------------------------------------------------------------------
+1. PANTALLA DE LOGIN (login_page.dart)
+--------------------------------------------------------------------------------
+- Propósito: Autenticación de usuarios mediante DNI.
+- Elementos:
+    * Campo "DNI": Ingreso de la identificación del usuario.
+    * Botón "Iniciar sesión":
+        - Acción: Consulta el servicio de usuarios, busca coincidencia por DNI,
+          determina el rol y redirige al Shell correspondiente.
+    * Ilustración Lateral (en pantallas anchas): Panel visual informativo.
+
+--------------------------------------------------------------------------------
+2. DASHBOARD PRINCIPAL (dashboard_page.dart)
+--------------------------------------------------------------------------------
+- Propósito: Resumen clínico y estadísticas rápidas.
+- Métricas (Tarjetas superiores):
+    * "Total Pacientes": Muestra el conteo global.
+    * "Consultas hoy": Conteo de atenciones del día actual.
+    * "Nuevos este mes": Pacientes registrados recientemente.
+    * "Áreas activas": Número de departamentos operativos.
+- Botones:
+    * Icono "Refrescar" (Header): Recarga las métricas desde el backend.
+    * Botón "Actualizar" (Panel): Refresca la lista de consultas recientes.
+- Lista de Consultas Recientes: Muestra las últimas historias clínicas con su estado.
+
+--------------------------------------------------------------------------------
+3. GESTIÓN DE PACIENTES (patients_page.dart)
+--------------------------------------------------------------------------------
+- Propósito: CRUD completo de la base de datos de pacientes.
+- Acciones Principales:
+    * Botón "Nuevo Paciente": Abre un diálogo con formulario completo.
+    * Barra de Búsqueda: Filtra pacientes por nombre o DNI en tiempo real.
+    * Filtro de Estado: Dropdown para filtrar por Activo, Nuevo, Crónico, etc.
+- Tabla de Datos (Acciones por fila):
+    * Ver Historia (Icono Ojo): Navega al historial del paciente.
+    * Editar (Icono Lápiz): Abre el formulario con los datos cargados para modificar.
+    * Eliminar (Icono Basura): Solicita confirmación y borra el registro.
+- Formulario de Paciente:
+    * Campos: Nombres, Apellidos, DNI, Teléfono, Email, Distrito, Sexo, Seguro,
+      Grupo Sanguíneo, Estado, Alertas/Alergias.
+    * Botones: "Cancelar" y "Crear/Guardar cambios".
+
+--------------------------------------------------------------------------------
+4. HISTORIA CLÍNICA (clinical_history_page.dart)
+--------------------------------------------------------------------------------
+- Propósito: Visualización y gestión del historial de atenciones.
+- Flujo:
+    * Buscador de Paciente: Permite seleccionar un paciente para cargar su HC.
+    * Botón "Cambiar paciente": Resetea la vista para buscar otro.
+- Lista de Atenciones (Acordeón):
+    * Al hacer clic en una fila: Se expande para mostrar SOAP (Motivo,
+      Enfermedad, Observaciones, Plan) y diagnósticos CIE-10.
+    * Botón "Firmar" (Solo en completadas): Acción para pasar estado de 'Completada'
+      a 'Firmada' mediante el servicio.
+
+--------------------------------------------------------------------------------
+5. NUEVA CONSULTA / SOAP (consultation_page.dart)
+--------------------------------------------------------------------------------
+- Propósito: Registro de una nueva atención médica.
+- Secciones del Formulario:
+    * Selector de Paciente: Buscador integrado para vincular la consulta.
+    * Signos Vitales: Campos numéricos (Presión, FC, Temp, SatO2, Peso, Talla).
+    * Anamnesis (SOAP): Campos de texto multilínea para Motivo, Enfermedad, etc.
+    * Diagnóstico CIE-10:
+        - Campos para Código y Descripción.
+        - Selector de Tipo (Principal, Secundario, etc.).
+        - Botón "Agregar": Inserta el diagnóstico en la lista de la consulta.
+- Acciones Finales:
+    * Botón "Guardar borrador": Registra la HC con estado 'BORRADOR'.
+    * Botón "Firmar HC": Registra la HC y aplica la firma (estado 'FIRMADA').
+
+--------------------------------------------------------------------------------
+6. RECETAS MÉDICAS (prescription_page.dart)
+--------------------------------------------------------------------------------
+- Propósito: Emisión y control de recetas electrónicas.
+- Acciones Principales:
+    * Botón "Nueva Receta": Abre el creador de recetas.
+    * Icono "Anular" (En cada fila): Cancela la validez de una receta vigente.
+- Creador de Receta (Formulario):
+    * Selector de Paciente.
+    * Gestión de Medicamentos:
+        - Botón "+ Agregar medicamento": Añade una nueva fila de insumo.
+        - Campos por item: Medicamento, Dosis, Frecuencia, Duración, Cantidad.
+        - Icono "Eliminar": Quita un medicamento de la lista actual.
+
+--------------------------------------------------------------------------------
+7. TELEMEDICINA (telemedicine_page.dart)
+--------------------------------------------------------------------------------
+- Propósito: Programación y ejecución de videoconsultas.
+- Filtros: "Todas", "Programadas", "En curso", "Completadas".
+- Acciones por Sesión:
+    * Botón "Nueva sesión": Programación (Fecha, Especialidad, Link, Motivo).
+    * Icono "Play": Inicia la sesión (pasa a 'EN_CURSO').
+    * Icono "Abrir enlace": Abre la URL de la videollamada (Meet/Zoom).
+    * Icono "Check": Finaliza la sesión (pasa a 'COMPLETADA').
+
+--------------------------------------------------------------------------------
+8. ADMINISTRACIÓN (admin/pages/...)
+--------------------------------------------------------------------------------
+- Módulos adicionales (Solo para Rol ADMIN):
+    * Gestión de Usuarios: Lista y formulario para personal de salud.
+    * Áreas y Establecimientos: Configuración de la red de salud.
+    * Auditoría: Registro de logs y acciones críticas del sistema.
+================================================================================

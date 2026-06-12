@@ -1,0 +1,77 @@
+================================================================================
+ESTRUCTURA DEL SISTEMA DE HISTORIAS CLÍNICAS (HCE RURAL SALUD)
+================================================================================
+
+Este documento detalla la arquitectura actual del sistema, incluyendo los
+ajustes realizados para asegurar la conectividad y estabilidad del proyecto.
+
+--------------------------------------------------------------------------------
+1. ARQUITECTURA GENERAL
+--------------------------------------------------------------------------------
+El sistema sigue un modelo Cliente-Servidor:
+- Frontend: Aplicación Flutter (Multiplataforma: Android, Web, Windows).
+- Backend: API REST con Spring Boot 3.1.0 y Java 17.
+- Base de Datos: H2 (en memoria para desarrollo) / MySQL (producción).
+
+--------------------------------------------------------------------------------
+2. ESTRUCTURA DEL BACKEND (hce-backend)
+--------------------------------------------------------------------------------
+Ubicación: D:/Sistema_de_historias_clinicas/hce-backend
+
+Principales componentes (src/main/java/pe/gob/salud/hce/):
+- /config: Configuraciones de CORS (ajustado para desarrollo) y seguridad.
+- /controller: Endpoints de la API (Auth, Patients, ClinicalHistories, etc.).
+- /model: Entidades de JPA que definen las tablas de la base de datos.
+- /repository: Interfaces de Spring Data JPA para el acceso a datos.
+- /service: Lógica de negocio del sistema.
+- /dto: Objetos de transferencia de datos para las peticiones API.
+
+Configuración Reciente:
+- pom.xml: Se añadió soporte para base de datos H2.
+- application.properties: Perfil 'dev' activado por defecto para facilidad de uso.
+- data-dev.sql: Carga automática de datos de prueba al iniciar.
+
+--------------------------------------------------------------------------------
+3. ESTRUCTURA DEL FRONTEND (Flutter)
+--------------------------------------------------------------------------------
+Ubicación: D:/Sistema_de_historias_clinicas/lib
+
+Organización de carpetas:
+- /core:
+    - api_config.dart: Configuración de URL dinámica (localhost vs 10.0.2.2).
+    - api_client.dart: Cliente HTTP centralizado para todas las peticiones.
+    - models.dart: Modelos de datos espejo del backend (AppUser, Patient, etc.).
+    - user_session.dart: Gestión del estado de la sesión y roles.
+- /pages: Vistas principales (Login, Dashboard, Historias Clínicas, etc.).
+- /admin: Módulo completo de administración de usuarios y establecimientos.
+- /shells: Estructuras de navegación personalizadas según el rol del usuario.
+- /widgets: Componentes UI reutilizables.
+- main.dart: Punto de entrada y configuración de rutas.
+
+Ajustes de Conectividad:
+- AndroidManifest.xml: Activado 'usesCleartextTraffic' para permitir HTTP local.
+- Login Fix: Corregida la validación de login para usar DNI en lugar de un
+  campo 'username' inexistente en el modelo.
+
+--------------------------------------------------------------------------------
+4. FLUJO DE CONECTIVIDAD (CÓMO FUNCIONA TODO JUNTO)
+--------------------------------------------------------------------------------
+1. El Backend inicia y levanta un servidor en el puerto 8080.
+2. La App Flutter consulta ApiConfig.baseUrl para saber a dónde conectarse.
+   - Si es Web: usa http://localhost:8080/api
+   - Si es Emulador Android: usa http://10.0.2.2:8080/api
+3. El ApiClient realiza peticiones HTTP a los controladores de Spring.
+4. El Backend procesa la petición y responde en formato JSON.
+5. Los modelos en Flutter (models.dart) transforman ese JSON en objetos de Dart
+   para ser mostrados en la interfaz.
+
+--------------------------------------------------------------------------------
+5. COMANDOS ÚTILES
+--------------------------------------------------------------------------------
+Iniciar Backend (desde hce-backend):
+> mvnw.cmd spring-boot:run
+
+Iniciar Frontend (desde raíz):
+> flutter run -d chrome  (para Web)
+> flutter run           (para Android/Windows)
+================================================================================

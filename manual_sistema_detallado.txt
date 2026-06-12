@@ -1,0 +1,98 @@
+================================================================================
+MANUAL DE OPERACIÓN DETALLADO — HCE RURAL SALUD
+================================================================================
+
+Este manual describe paso a paso cómo funciona el sistema, las acciones de cada
+módulo y la lógica detrás de cada proceso clínico y administrativo.
+
+--------------------------------------------------------------------------------
+1. ACCESO Y SEGURIDAD (Login)
+--------------------------------------------------------------------------------
+- Inicio de Sesión:
+    1. El usuario ingresa su DNI en el campo de identificación.
+    2. El sistema valida el DNI contra la base de datos de personal.
+    3. Si es correcto, el sistema identifica el ROL asignado (Médico, Enfermero,
+       Admin, etc.) y carga el menú lateral personalizado.
+- Seguridad: Cada acción realizada queda registrada en el módulo de "Auditoría"
+  con fecha, hora e IP.
+
+--------------------------------------------------------------------------------
+2. MÓDULO DE PACIENTES (Admisión y Registro)
+--------------------------------------------------------------------------------
+- Registro de Nuevo Paciente:
+    1. Se presiona el botón "Nuevo Paciente".
+    2. Se completan datos básicos (DNI, Nombres, Fecha de Nacimiento).
+    3. Se asigna un "Número de Historia Clínica" (Generado automáticamente).
+    4. Se registran Alertas (Alergias, condiciones crónicas) que aparecerán
+       resaltadas en rojo en futuras consultas.
+- Gestión: Desde la lista se puede ver, editar datos o eliminar registros
+  (con confirmación).
+
+--------------------------------------------------------------------------------
+3. PROCESO CLÍNICO: TRIAGE (Enfermería)
+--------------------------------------------------------------------------------
+- El personal de enfermería recibe al paciente y realiza el Triage:
+    1. Selecciona al paciente desde el buscador.
+    2. Registra Signos Vitales:
+       - Presión Arterial (Sistólica/Diastólica).
+       - Frecuencia Cardiaca y Respiratoria.
+       - Saturación de Oxígeno (Crítico para zonas de altura/rurales).
+       - Temperatura, Peso y Talla.
+    3. Al guardar, estos datos se vinculan a la "Consulta Pendiente" para que
+       el médico los vea de inmediato.
+
+--------------------------------------------------------------------------------
+4. PROCESO CLÍNICO: CONSULTA MÉDICA (SOAP)
+--------------------------------------------------------------------------------
+El médico abre la pantalla de "Nueva Consulta" y sigue la metodología SOAP:
+
+1. SUBJETIVO (Motivo de consulta): El médico escribe lo que el paciente relata.
+2. OBJETIVO (Examen Físico): Se visualizan los signos vitales tomados en Triage
+   y el médico añade sus observaciones.
+3. APRECIACIÓN (Diagnóstico):
+   - El médico busca códigos en el catálogo CIE-10 (Ej: I10 para Hipertensión).
+   - Clasifica el diagnóstico como Presuntivo o Definitivo.
+4. PLAN (Tratamiento): El médico escribe las indicaciones y el plan a seguir.
+
+- Firma de Historia:
+    * "Guardar Borrador": Permite seguir editando luego.
+    * "Firmar HC": Bloquea la edición del documento (Firma Digital) y lo hace
+      oficial para el archivo legal.
+
+--------------------------------------------------------------------------------
+5. EMISIÓN DE RECETAS ELECTRÓNICAS
+--------------------------------------------------------------------------------
+1. El médico selecciona "Nueva Receta".
+2. Agrega medicamentos de forma dinámica (Botón "+").
+3. Especifica: Medicamento, Dosis (Ej: 500mg), Frecuencia (Ej: c/8h),
+   Duración (Ej: 7 días) y Cantidad total.
+4. Al terminar, la receta se genera con un número único y queda lista para
+   que Farmacia la despache.
+
+--------------------------------------------------------------------------------
+6. TELEMEDICINA (Atención a Distancia)
+--------------------------------------------------------------------------------
+1. Programación: Se elige paciente, fecha y se pega el enlace (Meet/Zoom).
+2. Inicio: El médico pulsa el icono de "Play" para iniciar la sesión.
+3. Interacción: El médico puede abrir el enlace de video y, simultáneamente,
+   ir llenando la Historia Clínica en el sistema.
+4. Cierre: Se marca como "Completada" al finalizar la llamada.
+
+--------------------------------------------------------------------------------
+7. ADMINISTRACIÓN Y CONFIGURACIÓN
+--------------------------------------------------------------------------------
+- Gestión de Usuarios: El administrador crea las cuentas para médicos y
+  enfermeros, asignándoles su área (Pediatría, Ginecología, etc.).
+- Auditoría: El sistema muestra una tabla de "Logs" donde se ve si un médico
+  borró una historia, si alguien exportó datos o si hubo intentos de login
+  fallidos.
+- Áreas y Establecimientos: Se configuran las postas médicas de la red rural.
+
+--------------------------------------------------------------------------------
+8. INTERCAMBIO DE DATOS (Interoperabilidad)
+--------------------------------------------------------------------------------
+- El sistema cuenta con un motor de conversión HL7 FHIR.
+- Cuando un paciente es referido a otro hospital, el sistema "empaqueta" su
+  historia clínica en un formato digital estándar para que el hospital de
+  destino pueda leerla sin errores.
+================================================================================

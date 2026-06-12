@@ -1,0 +1,67 @@
+================================================================================
+ANÁLISIS DE DATOS Y MÉTRICAS — HCE RURAL SALUD
+================================================================================
+
+Este documento describe cómo el sistema gestiona, analiza y visualiza los datos
+clínicos y operativos para la toma de decisiones.
+
+--------------------------------------------------------------------------------
+1. ORIGEN Y ESTRUCTURA DE LOS DATOS
+--------------------------------------------------------------------------------
+Los datos se originan en el proceso clínico (SOAP) y administrativo:
+- Pacientes: Datos demográficos y de contacto.
+- Historias Clínicas: Datos estructurados (Signos Vitales, Diagnósticos CIE-10)
+  y datos no estructurados (Anamnesis, Plan).
+- Intercambio Rural: Tiempos de respuesta, estados de referencia y metadatos
+  de interoperabilidad.
+
+--------------------------------------------------------------------------------
+2. MÉTRICAS CLAVE DE RENDIMIENTO (KPIs)
+--------------------------------------------------------------------------------
+El sistema calcula y muestra en tiempo real (en el Dashboard y Panel FHIR):
+
+A. Eficiencia Clínica:
+   - Tiempo de Acceso (T. Acceso): Mide cuánto tarda el personal en cargar la
+     HCE del paciente desde el servidor rural.
+   - Duración de Consulta (T. Atención): Mide el tiempo promedio desde que el
+     médico abre la consulta hasta que la firma.
+
+B. Volumen y Alcance:
+   - Total de Pacientes: Crecimiento de la población atendida.
+   - Consultas Diarias: Carga de trabajo por establecimiento.
+   - Nuevos Registros: Tasa de captación mensual.
+
+C. Interoperabilidad (HL7 FHIR):
+   - Referencias vs Contrarreferencias: Flujo de pacientes entre niveles.
+   - Sincronía PDI: Porcentaje de historias compartidas con la red central.
+
+--------------------------------------------------------------------------------
+3. ANÁLISIS DE DATASET RURAL (DatasetAnalyticsPage)
+--------------------------------------------------------------------------------
+El sistema incluye un panel avanzado de analítica que procesa el "Dataset de
+Interoperabilidad Rural":
+
+- Distribución de Recursos FHIR:
+    * Encounter: Atenciones registradas como encuentros clínicos.
+    * Condition: Prevalencia de diagnósticos (Patologías).
+    * Observation: Mediciones de signos vitales.
+    * Patient: Distribución demográfica.
+
+- Análisis de Diagnósticos: Permite filtrar y buscar patrones epidemiológicos
+  basados en códigos CIE-10 (Ej: ¿Cuántos casos de I10 - Hipertensión existen?).
+
+--------------------------------------------------------------------------------
+4. CAPACIDADES DE EXPORTACIÓN Y TOMA DE DECISIONES
+--------------------------------------------------------------------------------
+- Reportes Dinámicos: El sistema permite filtrar por Tipo de Atención, Establecimiento
+  de Origen/Destino y Recurso FHIR.
+- Auditoría de Datos: Cada registro analizado tiene un rastro de auditoría,
+  asegurando que los datos para reportes estadísticos sean íntegros y legales.
+
+--------------------------------------------------------------------------------
+5. TECNOLOGÍA DE ANÁLISIS
+--------------------------------------------------------------------------------
+- Frontend: Cálculos reactivos en Dart (agregaciones, promedios, porcentajes).
+- Backend: Consultas optimizadas en JPA/SQL para obtener sumatorias y conteos.
+- Intercambio: Motor de mapeo JSON -> FHIR R4.
+================================================================================

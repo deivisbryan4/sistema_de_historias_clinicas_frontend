@@ -1,0 +1,65 @@
+================================================================================
+PIPELINE Y FLUJO DE TRABAJO — HCE RURAL SALUD
+================================================================================
+
+Este documento describe los "pipelines" o flujos secuenciales del sistema, desde
+el desarrollo hasta la persistencia de datos y la interoperabilidad.
+
+--------------------------------------------------------------------------------
+1. PIPELINE DE DESARROLLO (Workflow)
+--------------------------------------------------------------------------------
+Pasos secuenciales para añadir una funcionalidad o corregir un error:
+
+1. Modificación de Modelos (Backend): Si cambia el dato, se edita la entidad
+   JPA en 'hce-backend/src/main/java/pe/gob/salud/hce/model/'.
+2. Actualización de API (Controller): Se expone el nuevo campo o endpoint.
+3. Sincronización de Modelos (Frontend): Se actualiza 'lib/core/models.dart'
+   con los nuevos campos y su lógica 'fromJson/toJson'.
+4. Implementación en UI: Se crean o modifican los widgets/páginas en Flutter.
+5. Pruebas Locales:
+   - Backend: ./mvnw test
+   - Frontend: flutter analyze && flutter test
+
+--------------------------------------------------------------------------------
+2. PIPELINE DE DATOS (End-to-End Request)
+--------------------------------------------------------------------------------
+Flujo que sigue la información cuando un usuario realiza una acción (Ej: Guardar HC):
+
+1. UI (Flutter): El médico pulsa "Firmar HC". Los datos del formulario se
+   validan y se agrupan en un Mapa de Dart.
+2. API Client: 'ApiClient.post' transforma el Mapa a JSON y lo envía vía HTTP.
+3. Gateway/CORS: El servidor Spring Boot recibe la petición y valida el origen.
+4. Controller: El endpoint recibe el JSON y lo mapea a un DTO (Data Transfer Object).
+5. Service: La lógica de negocio procesa el DTO, aplica reglas (firma digital,
+   validación de roles) y crea la Entidad.
+6. Repository (JPA): Se ejecuta la sentencia SQL (INSERT/UPDATE).
+7. Base de Datos: La información se persiste en H2 (Dev) o MySQL (Prod).
+8. Respuesta: El flujo retorna un código 201 (Created) o 200 (OK) al Frontend.
+
+--------------------------------------------------------------------------------
+3. PIPELINE DE CONSTRUCCIÓN Y DESPLIEGUE (Build)
+--------------------------------------------------------------------------------
+Proceso para generar los entregables del sistema:
+
+BACKEND (Java/Spring Boot):
+- Comando: ./mvnw clean package
+- Resultado: Un archivo 'hce-backend-0.0.1-SNAPSHOT.jar' en la carpeta /target.
+- Ejecución: java -jar target/hce-backend-0.0.1-SNAPSHOT.jar
+
+FRONTEND (Flutter):
+- Android: flutter build apk --release (Genera el instalador .apk)
+- Web: flutter build web (Genera la carpeta /build/web lista para hosting)
+- Windows: flutter build windows (Genera el ejecutable .exe)
+
+--------------------------------------------------------------------------------
+4. PIPELINE DE INTEROPERABILIDAD (HL7 FHIR)
+--------------------------------------------------------------------------------
+Flujo de transformación para el intercambio de datos rural:
+
+1. Extracción: Se obtiene la Historia Clínica desde la base de datos local.
+2. Mapeo: El 'FhirController' transforma la entidad a un recurso HL7 FHIR
+   (Bundle o Patient).
+3. Serialización: El recurso se convierte a formato JSON estándar HL7.
+4. Envío/Recepción: El dato viaja a través de la red de salud rural hacia otros
+   establecimientos compatibles.
+================================================================================

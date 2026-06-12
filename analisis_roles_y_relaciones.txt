@@ -1,0 +1,90 @@
+================================================================================
+ANÁLISIS DE ROLES Y RELACIONES — HCE RURAL SALUD
+================================================================================
+
+Este documento detalla los permisos por cada tipo de usuario y el mapa de
+relaciones técnicas que sostienen el sistema.
+
+--------------------------------------------------------------------------------
+1. CAPACIDADES Y PERMISOS POR ROL
+--------------------------------------------------------------------------------
+
+👨‍⚕️ MÉDICO (MedicoShell)
+   - Visualización: Dashboard clínico con métricas de atención, lista de
+     pacientes, historiales clínicos completos y teleconsultas.
+   - Acciones:
+     * Crear y editar pacientes.
+     * Iniciar Nueva Consulta (SOAP): Registro de anamnesis, signos vitales y
+       diagnósticos CIE-10.
+     * Firmar Digitalmente: Pasar historias de 'Completada' a 'Firmada'.
+     * Prescribir: Crear recetas electrónicas con múltiples medicamentos.
+     * Telemedicina: Programar, iniciar (en curso) y finalizar sesiones.
+     * Reportes: Acceso a estadísticas de gestión y HL7 FHIR.
+
+👩‍⚕️ ENFERMERO/A (EnfermeroShell)
+   - Visualización: Dashboard de triage, lista de pacientes nuevos/pendientes.
+   - Acciones:
+     * Registrar Signos Vitales: Toma de presión, pulso, temperatura, SatO2,
+       peso y talla.
+     * Gestión de Triage: Identificar pacientes en cola de espera.
+     * Telemedicina: Ver y apoyar en sesiones programadas.
+     * Consulta HL7 FHIR: Ver intercambio de datos rural.
+
+🗂️ ADMINISTRATIVO (AdministrativoShell)
+   - Visualización: Panel de admisión, padrón de pacientes.
+   - Acciones:
+     * Registro de Pacientes: Alta de nuevos pacientes en el sistema.
+     * Citas y Turnos: (Módulo de admisión simplificado).
+     * Telemedicina: Apoyo en la programación de sesiones.
+
+🔍 AUDITOR (AuditorShell)
+   - Visualización: Registro de auditoría (logs) y reportes analíticos.
+   - Acciones:
+     * Inspección de Historias: Revisar que las HC cumplan con la norma técnica.
+     * Exportación: Generar reportes para entidades reguladoras.
+
+⚙️ ADMINISTRADOR (AdminShell)
+   - Acciones Críticas:
+     * Gestión de Usuarios: Crear, editar y suspender cuentas de personal.
+     * Configuración: Definir Áreas Médicas y Establecimientos de Salud.
+     * Auditoría Total: Ver cada acción realizada por cualquier usuario.
+
+--------------------------------------------------------------------------------
+2. MAPA DE RELACIONES DEL SISTEMA (Lógica del Backend)
+--------------------------------------------------------------------------------
+
+Relaciones Principales (Entidades JPA):
+
+1. PACIENTE (1) <---> HISTORIA CLÍNICA (N)
+   - Un paciente posee múltiples atenciones. La HC depende siempre de un ID
+     de paciente válido.
+
+2. MÉDICO (1) <---> HISTORIA CLÍNICA (N)
+   - Cada registro SOAP está vinculado al DNI/Nombre del médico que lo creó.
+
+3. HISTORIA CLÍNICA (1) <---> SIGNOS VITALES (1)
+   - Relación One-to-One. Los signos vitales son capturados en un momento
+     específico de la atención.
+
+4. HISTORIA CLÍNICA (1) <---> DIAGNÓSTICOS CIE-10 (N)
+   - Una atención puede tener un diagnóstico principal y varios secundarios.
+
+5. PACIENTE (1) <---> RECETAS (N)
+   - Las recetas se emiten a nombre de un paciente, usualmente derivadas de
+     una atención médica.
+
+6. RECETA (1) <---> ITEMS DE RECETA (N)
+   - Una sola receta agrupa varios medicamentos (nombre, dosis, frecuencia).
+
+7. ESTABLECIMIENTO (1) <---> ÁREAS MÉDICAS (N)
+   - Los establecimientos (Postas, Hospitales) contienen diversas áreas
+     operativas donde trabajan los usuarios.
+
+--------------------------------------------------------------------------------
+3. FLUJO DE DATOS HL7 FHIR
+--------------------------------------------------------------------------------
+El sistema está preparado para interoperabilidad:
+- Las Historias Clínicas pueden transformarse en recursos FHIR (Bundle, Patient,
+  Observation) para ser enviadas a otros centros de salud de la red rural,
+  asegurando que el historial viaje con el paciente.
+================================================================================
