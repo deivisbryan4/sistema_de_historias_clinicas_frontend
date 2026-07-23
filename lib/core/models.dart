@@ -508,6 +508,10 @@ class DashboardStats {
   final int totalPatients;
   final int consultationsToday;
   final int newPatientsThisMonth;
+  final int consultationsThisMonth;
+  final int activePrescriptions;
+  final int telemedicineSessionsToday;
+  final int clinicalHistoriesCount;
 
   const DashboardStats({
     this.totalUsers = 0,
@@ -520,6 +524,10 @@ class DashboardStats {
     this.totalPatients = 0,
     this.consultationsToday = 0,
     this.newPatientsThisMonth = 0,
+    this.consultationsThisMonth = 0,
+    this.activePrescriptions = 0,
+    this.telemedicineSessionsToday = 0,
+    this.clinicalHistoriesCount = 0,
   });
 
   factory DashboardStats.fromJson(Map<String, dynamic> j) => DashboardStats(
@@ -533,5 +541,9 @@ class DashboardStats {
         totalPatients: j['totalPatients'] ?? 0,
         consultationsToday: j['consultationsToday'] ?? 0,
         newPatientsThisMonth: j['newPatientsThisMonth'] ?? 0,
+        consultationsThisMonth: j['consultationsThisMonth'] ?? 0,
+        activePrescriptions: j['activePrescriptions'] ?? 0,
+        telemedicineSessionsToday: j['telemedicineSessionsToday'] ?? 0,
+        clinicalHistoriesCount: j['clinicalHistoriesCount'] ?? 0,
       );
 }

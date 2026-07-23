@@ -1,0 +1,17 @@
+{
+  "nombres": "Maria",
+  "apellidos": "Gonzales",
+  "dni": "76543210",
+  "email": "maria.enfermera@test.com",
+  "telefono": "999777666",
+  "rol": "ENFERMERO",
+  "area": "Emergencia",
+  "establecimiento": "C.S. Juliaca",
+  "estado": "ACTIVO",
+  "colegiatura": "CEP-98765",
+  "username": "enfermera1",
+  "password": "enfermero123",
+  "fechaNacimiento": "1990-08-20",
+  "sexo": "Femenino",
+  "cargo": "Enfermera Jefe"
+}

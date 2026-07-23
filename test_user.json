@@ -1,0 +1,17 @@
+{
+  "nombres": "Juan",
+  "apellidos": "Perez",
+  "dni": "12345618",
+  "email": "juan@test.com",
+  "telefono": "999999999",
+  "rol": "MEDICO",
+  "area": "Medicina General",
+  "establecimiento": "C.S. Juliaca",
+  "estado": "ACTIVO",
+  "cmp": "12345",
+  "username": "juanperez",
+  "password": "123456",
+  "fechaNacimiento": "1990-01-01",
+  "sexo": "Masculino",
+  "cargo": "Médico"
+}

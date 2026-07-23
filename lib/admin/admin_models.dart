@@ -167,6 +167,7 @@ class AppUser {
   final String sexo;
   final String cargo;
   bool forzarCambioPassword;
+  String? password;
 
   AppUser({
     required this.id,
@@ -187,6 +188,7 @@ class AppUser {
     required this.sexo,
     required this.cargo,
     this.forzarCambioPassword = false,
+    this.password,
   });
 
   String get nombreCompleto => '$nombres $apellidos';
@@ -254,7 +256,7 @@ class AppUser {
       };
 
   /// For POST /api/admin/users and PUT /api/admin/users/{id}
-  Map<String, dynamic> toCreateJson({String password = '123456'}) => {
+  Map<String, dynamic> toCreateJson() => {
         'nombres': nombres,
         'apellidos': apellidos,
         'dni': dni,
@@ -267,7 +269,7 @@ class AppUser {
         if (cmp != null && cmp!.isNotEmpty) 'cmp': cmp,
         if (colegiatura != null && colegiatura!.isNotEmpty) 'colegiatura': colegiatura,
         'username': username,
-        'password': password,
+        'password': password ?? '123456',
         'fechaNacimiento': fechaNacimiento.toIso8601String().substring(0, 10),
         'sexo': sexo,
         'cargo': cargo,

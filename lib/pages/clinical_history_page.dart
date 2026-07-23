@@ -22,6 +22,27 @@ class _ClinicalHistoryPageState extends State<ClinicalHistoryPage> {
   Object? _error;
 
   @override
+  void initState() {
+    super.initState();
+    // Carga inicial de historias recientes de todo el sistema
+    _loadGlobalRecent();
+  }
+
+  Future<void> _loadGlobalRecent() async {
+    setState(() {
+      _loadingHistories = true;
+      _error = null;
+      _selectedPatient = null;
+    });
+    try {
+      final r = await ClinicalHistoryService.getAll();
+      if (mounted) setState(() { _histories = r; _loadingHistories = false; });
+    } catch (e) {
+      if (mounted) setState(() { _error = e; _loadingHistories = false; });
+    }
+  }
+
+  @override
   void dispose() {
     _searchCtrl.dispose();
     super.dispose();
@@ -76,16 +97,17 @@ class _ClinicalHistoryPageState extends State<ClinicalHistoryPage> {
         AppHeader(
           title: 'Historia Clínica',
           subtitle: _selectedPatient == null
-              ? 'Busca un paciente para ver su historial'
+              ? 'Atenciones recientes en el sistema'
               : '${_selectedPatient!.nombreCompleto} · HC ${_selectedPatient!.numeroHc}',
           actions: [
             if (_selectedPatient != null)
               FilledButton.icon(
                 onPressed: () {
-                  setState(() { _selectedPatient = null; _histories = []; _searchCtrl.clear(); });
+                  setState(() { _searchCtrl.clear(); });
+                  _loadGlobalRecent();
                 },
                 icon: const Icon(Icons.close),
-                label: const Text('Cambiar paciente'),
+                label: const Text('Ver todas'),
               ),
           ],
         ),
@@ -162,18 +184,13 @@ class _ClinicalHistoryPageState extends State<ClinicalHistoryPage> {
               ),
               const SizedBox(height: 14),
               // ── Lista de historias ───────────────────────────────────────
-              if (_selectedPatient == null && !_loadingHistories)
-                const EmptyState(
-                  message: 'Busca un paciente para ver sus historias clínicas',
-                  icon: Icons.folder_shared_outlined,
-                )
-              else if (_loadingHistories)
+              if (_loadingHistories)
                 const LoadingState(message: 'Cargando historias clínicas...')
               else if (_error != null)
-                ErrorState(error: _error!, onRetry: () => _loadHistories(_selectedPatient!))
+                ErrorState(error: _error!, onRetry: () => _selectedPatient != null ? _loadHistories(_selectedPatient!) : _loadGlobalRecent())
               else if (_histories.isEmpty)
                 const EmptyState(
-                  message: 'Este paciente no tiene historias clínicas registradas',
+                  message: 'No hay historias clínicas registradas',
                   icon: Icons.folder_open_outlined,
                 )
               else
@@ -186,13 +203,18 @@ class _ClinicalHistoryPageState extends State<ClinicalHistoryPage> {
                           history: h,
                           isExpanded: false, // Force collapse for now
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => ClinicalHistoryDetailView(
-                                patient: _selectedPatient!,
-                                history: h,
-                                onBack: () => Navigator.of(context).pop(),
-                              ),
-                            ));
+                            // Si no hay paciente seleccionado (vista global), buscamos el paciente de la historia
+                            if (_selectedPatient == null) {
+                              _navigateToDetailFromGlobal(context, h);
+                            } else {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => ClinicalHistoryDetailView(
+                                  patient: _selectedPatient!,
+                                  history: h,
+                                  onBack: () => Navigator.of(context).pop(),
+                                ),
+                              ));
+                            }
                           },
                           onSign: h.estado.toUpperCase() == 'COMPLETADA'
                               ? () => _signHistory(h)
@@ -207,6 +229,28 @@ class _ClinicalHistoryPageState extends State<ClinicalHistoryPage> {
         ),
       ],
     );
+  }
+
+  Future<void> _navigateToDetailFromGlobal(BuildContext context, ClinicalHistory h) async {
+    showDialog(context: context, builder: (_) => const Center(child: CircularProgressIndicator()));
+    try {
+      final p = await PatientService.getById(h.patientId);
+      if (context.mounted) {
+        Navigator.of(context).pop(); // Quitar loading
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => ClinicalHistoryDetailView(
+            patient: p,
+            history: h,
+            onBack: () => Navigator.of(context).pop(),
+          ),
+        ));
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.of(context).pop();
+        showError(context, 'No se pudo cargar el detalle del paciente');
+      }
+    }
   }
 }
 

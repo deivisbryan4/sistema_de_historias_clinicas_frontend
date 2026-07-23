@@ -164,30 +164,33 @@ class _DashMetric extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Panel(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(10),
       child: Row(
         children: [
           CircleAvatar(
-            radius: 22,
+            radius: 16,
             backgroundColor: color.withValues(alpha: .12),
-            child: Icon(icon, color: color, size: 20),
+            child: Icon(icon, color: color, size: 16),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   value,
                   style: const TextStyle(
-                      fontSize: 26, fontWeight: FontWeight.w900, height: 1),
+                      fontSize: 20, fontWeight: FontWeight.w900, height: 1.0),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   label,
                   style: const TextStyle(
-                      color: AppColors.muted, fontSize: 12),
-                  maxLines: 2,
+                      color: AppColors.muted, fontSize: 10),
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

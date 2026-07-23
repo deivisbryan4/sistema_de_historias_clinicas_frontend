@@ -1,0 +1,85 @@
+================================================================================
+GUÍA DE ENDPOINTS PARA POSTMAN — HCE RURAL SALUD
+================================================================================
+
+Configura tu Postman con la URL base: http://localhost:8080/api
+
+--------------------------------------------------------------------------------
+1. AUTENTICACIÓN (Login)
+--------------------------------------------------------------------------------
+POST /auth/login
+Cuerpo (JSON):
+{
+    "username": "12345678",
+    "password": "password"
+}
+
+--------------------------------------------------------------------------------
+2. PACIENTES
+--------------------------------------------------------------------------------
+GET /clinical/patients (Obtener todos)
+GET /clinical/patients?search=Juan (Filtrar por nombre o DNI)
+GET /clinical/patients/{id} (Obtener uno por ID)
+
+POST /clinical/patients (Crear paciente)
+Cuerpo (JSON):
+{
+    "nombres": "Pedro",
+    "apellidos": "Ramirez",
+    "dni": "77889900",
+    "sexo": "Masculino",
+    "asegurado": "SIS",
+    "estado": "NUEVO"
+}
+
+--------------------------------------------------------------------------------
+3. HISTORIAS CLÍNICAS
+--------------------------------------------------------------------------------
+GET /clinical/histories (Todas las historias)
+GET /clinical/histories/recent (Atenciones recientes)
+GET /clinical/histories?patientId={id} (Historias de un paciente)
+
+POST /clinical/histories (Nueva atención SOAP)
+Cuerpo (JSON):
+{
+    "patientId": "id-del-paciente",
+    "medico": "Dr. Martínez",
+    "especialidad": "Medicina General",
+    "motivoConsulta": "Dolor de cabeza persistente",
+    "estado": "COMPLETADA"
+}
+
+--------------------------------------------------------------------------------
+4. RECETAS MÉDICAS
+--------------------------------------------------------------------------------
+GET /clinical/prescriptions (Todas las recetas)
+POST /clinical/prescriptions (Crear receta)
+Cuerpo (JSON):
+{
+    "patientId": "id-del-paciente",
+    "items": [
+        {
+            "medicamento": "Paracetamol 500mg",
+            "dosis": "1 tableta",
+            "frecuencia": "cada 8 horas",
+            "duracion": "3 días",
+            "cantidad": 10
+        }
+    ]
+}
+
+--------------------------------------------------------------------------------
+5. ADMINISTRACIÓN
+--------------------------------------------------------------------------------
+GET /admin/users (Lista de personal)
+GET /admin/dashboard/stats (Métricas del sistema)
+GET /admin/audit (Logs de auditoría)
+
+--------------------------------------------------------------------------------
+💡 TIP PARA POSTMAN:
+--------------------------------------------------------------------------------
+Para los métodos POST, PUT y PATCH, asegúrate de poner en la pestaña
+"Headers" lo siguiente:
+Key: Content-Type
+Value: application/json
+================================================================================

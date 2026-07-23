@@ -24,6 +24,7 @@ class _PatientsPageState extends State<PatientsPage> {
   @override
   void initState() {
     super.initState();
+    // Carga inicial automática de todos los pacientes
     _load();
   }
 

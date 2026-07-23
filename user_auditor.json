@@ -1,0 +1,16 @@
+{
+  "nombres": "Ana",
+  "apellidos": "Flores",
+  "dni": "54321098",
+  "email": "ana.auditor@test.com",
+  "telefono": "999555444",
+  "rol": "AUDITOR",
+  "area": "Auditoría",
+  "establecimiento": "C.S. Juliaca",
+  "estado": "ACTIVO",
+  "username": "auditor1",
+  "password": "auditor123",
+  "fechaNacimiento": "1982-11-25",
+  "sexo": "Femenino",
+  "cargo": "Auditora de Sistemas"
+}

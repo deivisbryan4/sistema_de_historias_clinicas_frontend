@@ -281,6 +281,7 @@ class _UserFormDialogState extends State<UserFormDialog> {
       sexo: _sexo,
       cargo: _cargo.text.trim(),
       forzarCambioPassword: _forzarCambio,
+      password: _password.text.trim().isEmpty ? (u?.password ?? '123456') : _password.text.trim(),
     );
     widget.onSave(newUser);
     Navigator.pop(context);

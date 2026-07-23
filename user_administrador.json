@@ -1,0 +1,16 @@
+{
+  "nombres": "Roberto",
+  "apellidos": "Sanchez",
+  "dni": "43210987",
+  "email": "roberto.superadmin@test.com",
+  "telefono": "999444333",
+  "rol": "ADMINISTRADOR",
+  "area": "Administración",
+  "establecimiento": "C.S. Juliaca",
+  "estado": "ACTIVO",
+  "username": "superadmin",
+  "password": "admin123",
+  "fechaNacimiento": "1980-02-14",
+  "sexo": "Masculino",
+  "cargo": "Administrador del Sistema"
+}

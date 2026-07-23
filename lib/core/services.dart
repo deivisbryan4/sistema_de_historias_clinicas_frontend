@@ -70,7 +70,7 @@ class ClinicalHistoryService {
   }
 
   static Future<ClinicalHistory> sign(String id) async {
-    final data = await ApiClient.patch('$_base/$id/sign');
+    final data = await ApiClient.post('$_base/$id/sign', {});
     return ClinicalHistory.fromJson(data);
   }
 }
@@ -175,7 +175,7 @@ class UserService {
   static const _base = '/admin/users';
 
   static Future<AppUser> login(String username, String password) async {
-    final data = await ApiClient.post('/auth/login', {
+    final data = await ApiClient.post('/users/login', {
       'username': username,
       'password': password,
     });

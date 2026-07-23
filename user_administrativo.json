@@ -1,0 +1,16 @@
+{
+  "nombres": "Luis",
+  "apellidos": "Mendoza",
+  "dni": "65432109",
+  "email": "luis.admin@test.com",
+  "telefono": "999666555",
+  "rol": "ADMINISTRATIVO",
+  "area": "Admisión",
+  "establecimiento": "C.S. Juliaca",
+  "estado": "ACTIVO",
+  "username": "admin1",
+  "password": "admin123",
+  "fechaNacimiento": "1988-03-10",
+  "sexo": "Masculino",
+  "cargo": "Técnico Administrativo"
+}

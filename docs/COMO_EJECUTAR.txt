@@ -1,0 +1,73 @@
+================================================================================
+GUÍA DE EJECUCIÓN: HCE RURAL SALUD (BACKEND + FRONTEND)
+================================================================================
+
+Sigue estos pasos en orden para que todo el sistema funcione correctamente:
+
+--------------------------------------------------------------------------------
+PASO 1: REQUISITOS PREVIOS
+--------------------------------------------------------------------------------
+1. Java JDK 17 o superior instalado.
+2. Flutter SDK instalado (versión 3.x).
+3. Google Chrome (para probar la versión Web) o un Emulador de Android.
+
+--------------------------------------------------------------------------------
+PASO 2: INICIAR EL BACKEND (SPRING BOOT)
+--------------------------------------------------------------------------------
+El backend es el cerebro del sistema. Debe estar corriendo para que la app
+Flutter pueda mostrar datos.
+
+1. Abre una terminal (PowerShell o CMD).
+2. Ve a la carpeta del backend:
+   cd D:/Sistema_de_historias_clinicas/hce-backend
+3. Ejecuta el comando para iniciar el servidor:
+   ./mvnw.cmd spring-boot:run
+
+   *Nota: La primera vez tardará un poco descargando dependencias.*
+   *Sabrás que está listo cuando veas el mensaje: "Started HceApplication in X seconds".*
+
+*Backend URL: http://localhost:8080*
+
+--------------------------------------------------------------------------------
+PASO 3: INICIAR EL FRONTEND (FLUTTER)
+--------------------------------------------------------------------------------
+Una vez que el backend esté "Started", abre otra terminal para el frontend.
+
+1. Ve a la carpeta raíz del proyecto:
+   cd D:/Sistema_de_historias_clinicas
+2. Descarga las librerías de Flutter:
+   flutter pub get
+3. Ejecuta la aplicación:
+
+   - Para WEB (Recomendado para ver todas las vistas):
+     flutter run -d chrome
+
+   - Para ANDROID (Emulador):
+     flutter run
+
+--------------------------------------------------------------------------------
+PASO 4: CÓMO PROBAR EL SISTEMA (DATOS DE ACCESO)
+--------------------------------------------------------------------------------
+El sistema ya tiene datos de prueba cargados automáticamente.
+
+Para entrar al sistema, usa los siguientes DNIs en la pantalla de Login:
+
+- Para entrar como MÉDICO:
+  DNI: 12345678
+
+- Para entrar como ENFERMERO/A:
+  DNI: 87654321
+
+- Para entrar como ADMINISTRADOR:
+  DNI: 11223344
+
+--------------------------------------------------------------------------------
+PREGUNTAS FRECUENTES Y SOLUCIÓN DE PROBLEMAS
+--------------------------------------------------------------------------------
+- ¿Error de conexión en Android?: El sistema está configurado para usar la IP
+  10.0.2.2 automáticamente en emuladores. No necesitas cambiar nada.
+- ¿Base de datos?: Se usa H2 (en memoria). Si cierras el backend, los datos
+  que hayas creado se borrarán y volverán a los de prueba originales.
+- ¿CORS Error?: Ya ha sido configurado en el backend para permitir la conexión
+  desde el navegador Chrome.
+================================================================================

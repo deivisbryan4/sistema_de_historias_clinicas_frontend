@@ -1,0 +1,17 @@
+{
+  "nombres": "Carlos",
+  "apellidos": "Rodriguez",
+  "dni": "87654321",
+  "email": "carlos.medico@test.com",
+  "telefono": "999888777",
+  "rol": "MEDICO",
+  "area": "Medicina General",
+  "establecimiento": "C.S. Juliaca",
+  "estado": "ACTIVO",
+  "cmp": "54321",
+  "username": "medico1",
+  "password": "medico123",
+  "fechaNacimiento": "1985-05-15",
+  "sexo": "Masculino",
+  "cargo": "Médico General"
+}
